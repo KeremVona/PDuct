@@ -5,6 +5,12 @@ import MineMain from "../components/mine/MineMain";
 import FarmMain from "../components/farm/FarmMain";
 import Modal from "../components/Modal";
 
+// Configuration for the heat system
+const HEAT_DECAY_RATE = 2;
+const DECAY_INTERVAL_MS = 10000;
+const MAX_HEAT = 100;
+const MIN_HEAT = 0;
+
 const MODALS = {
   BASE: "base",
   FUEL_MAIN: "fuelMain",
@@ -13,13 +19,24 @@ const MODALS = {
 };
 
 const Game = () => {
-  const [heat, setHeat] = useState(0);
+  const [heatLevel, setHeatLevel] = useState(50);
+  const [activeModal, setActiveModal] = useState(MODALS.BASE);
 
   useEffect(() => {
-    setHeat((prev) => prev + 1);
-  }, []);
+    const intervalId = setInterval(() => {
+      setHeatLevel((prevHeatLevel) => {
+        let newHeat = prevHeatLevel - HEAT_DECAY_RATE;
 
-  const [activeModal, setActiveModal] = useState(MODALS.BASE);
+        newHeat = Math.max(MIN_HEAT, newHeat);
+
+        return newHeat;
+      });
+    }, DECAY_INTERVAL_MS);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const closeModal = () => setActiveModal(MODALS.BASE);
 
@@ -30,7 +47,7 @@ const Game = () => {
   const renderModalContent = () => {
     switch (activeModal) {
       case MODALS.BASE:
-        return <BaseMain />;
+        return <BaseMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />;
       case MODALS.FUEL_MAIN:
         return <FuelMain />;
       case MODALS.MINE:
@@ -67,7 +84,7 @@ const Game = () => {
         {activeModal !== MODALS.BASE ? (
           <Modal>{renderModalContent()} </Modal>
         ) : (
-          <BaseMain />
+          <BaseMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />
         )}
       </div>
     </div>
