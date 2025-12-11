@@ -19,10 +19,34 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const boxes = Array(houseCount)
     .fill(null)
     .map((_, index) => (
-      <div className="border-white border-2 border-solid p-4 justify-center flex">
+      <div
+        key={index}
+        className="border-white border-2 border-solid p-4 justify-center flex"
+      >
         <p>House {index + 1}</p>
       </div>
     ));
+
+  const getHeatStatus = () => {
+    if (heatLevel > 34) {
+      return {
+        colorClass: "text-green-500",
+        message: "Stable",
+      };
+    }
+    if (heatLevel >= 14) {
+      return {
+        colorClass: "text-yellow-500",
+        message: "Caution",
+      };
+    }
+    return {
+      colorClass: "text-red-500 animate-pulse",
+      message: "CRITICAL",
+    };
+  };
+
+  const status = getHeatStatus();
 
   const handleHouseAdd = () => {
     if (heatLevel === MIN_HEAT) {
@@ -43,8 +67,16 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
       </button>
       <div className="items-center justify-center flex mb-10">
         <div className="border-white border-10 border-solid p-4 text-center ">
-          <p className="text-xl font-bold">Base</p>
-          <p className="text-lg">Heat Level: {heatLevel}</p>
+          <p className="text-white text-xl font-bold">Base</p>
+          <p
+            className={`text-xl font-bold transition duration-300 ${status.colorClass}`}
+          >
+            Heat Level: {heatLevel}
+          </p>
+
+          <p className={`text-sm ${status.colorClass}`}>
+            Status: {status.message}
+          </p>
         </div>
       </div>
       <div className="items-center justify-center grid grid-cols-4 gap-2">

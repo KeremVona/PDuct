@@ -60,23 +60,29 @@ const Game = () => {
   };
   return (
     <div>
-      <h1 className="text-2xl font-bold p-2 bg-gray-400">PDuct</h1>
-      <button className="bg-gray-600 p-1 mr-1 rounded-lg" onClick={closeModal}>
+      <h1 className="text-white text-2xl font-bold p-2 bg-gray-400">PDuct</h1>
+      <button
+        className="text-white bg-gray-600 p-1 mr-1 rounded-lg"
+        onClick={closeModal}
+      >
         Base
       </button>
       <button
-        className="bg-gray-600 p-1 mr-1 rounded-lg"
+        className="text-white bg-gray-600 p-1 mr-1 rounded-lg"
         onClick={openFuelMainModal}
       >
         Fuel Main
       </button>
       <button
-        className="bg-gray-600 p-1 mr-1 rounded-lg"
+        className="text-white bg-gray-600 p-1 mr-1 rounded-lg"
         onClick={openMineModal}
       >
         Mine Main
       </button>
-      <button className="bg-gray-600 p-1 rounded-lg" onClick={openFarmModal}>
+      <button
+        className="text-white bg-gray-600 p-1 rounded-lg"
+        onClick={openFarmModal}
+      >
         Farm Main
       </button>
 
