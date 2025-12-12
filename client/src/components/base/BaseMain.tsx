@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import type { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { increment, decrement } from "../../features/base/house/houseSlice";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -7,16 +10,17 @@ interface BaseMainProps {
   setHeatLevel: SetHeatLevelAction;
 }
 
-// Configuration for the heat system
+// Part of the heat system
 const MAX_HEAT = 100;
 const MIN_HEAT = 0;
 
 // Add toast notification for the alert
 
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
-  const [houseCount, setHouseCount] = useState(0);
+  const houseCount = useSelector((state: RootState) => state.house.value);
+  const dispatch = useDispatch();
 
-  const boxes = Array(houseCount)
+  const houseBoxes = Array(houseCount)
     .fill(null)
     .map((_, index) => (
       <div
@@ -52,7 +56,7 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
     if (heatLevel === MIN_HEAT) {
       alert("No heating is available to heat new houses");
     } else {
-      setHouseCount((prev) => prev + 1);
+      dispatch(increment());
       setHeatLevel((prev) => Math.max(MIN_HEAT, prev - 1));
     }
   };
@@ -80,7 +84,7 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
         </div>
       </div>
       <div className="items-center justify-center grid grid-cols-4 gap-2">
-        {boxes}
+        {houseBoxes}
       </div>
     </div>
   );
