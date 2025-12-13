@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import type { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { increment, decrement } from "../../features/base/house/houseSlice";
+import { useToast } from "../ui/toast/ToastProvider";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -14,9 +15,8 @@ interface BaseMainProps {
 const MAX_HEAT = 100;
 const MIN_HEAT = 0;
 
-// Add toast notification for the alert
-
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
+  const { addToast } = useToast();
   const houseCount = useSelector((state: RootState) => state.house.value);
   const dispatch = useDispatch();
 
@@ -54,7 +54,7 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
 
   const handleHouseAdd = () => {
     if (heatLevel === MIN_HEAT) {
-      alert("No heating is available to heat new houses");
+      addToast("No heating is available to heat new houses", "error");
     } else {
       dispatch(increment());
       setHeatLevel((prev) => Math.max(MIN_HEAT, prev - 1));

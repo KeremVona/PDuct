@@ -5,6 +5,7 @@ import tree3 from "../../assets/fuel_main/tree 3.svg";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import { chopTree } from "../../features/fuel_main/treeSlice";
+import { useToast } from "../ui/toast/ToastProvider";
 
 type TreeFileName = "tree1.svg" | "tree2.svg" | "tree3.svg";
 
@@ -14,24 +15,23 @@ const TREE_PATHS: Record<TreeFileName, string> = {
   "tree3.svg": tree3,
 };
 
-const FuelMain = () => {
+type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
+
+interface FuelMainProps {
+  heatLevel: number;
+  setHeatLevel: SetHeatLevelAction;
+}
+
+const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
+  const { addToast } = useToast();
   const dispatch = useDispatch();
   const trees = useSelector((state: RootState) => state.tree.trees);
 
   const handleChop = (treeId: number) => {
     dispatch(chopTree(treeId));
+    setHeatLevel((prev) => prev + 5);
+    addToast("Heat Level +5", "success");
   };
-  const [a] = useState(() => {
-    const treesArray = Array(20).fill(null);
-
-    return treesArray.map((_, index) => {
-      const b = Math.floor(Math.random() * 3);
-      return {
-        id: index,
-        src: trees[b],
-      };
-    });
-  });
 
   return (
     <div className="border-white border-2 p-2 bg-gray-500 border-solid w-250 h-140">

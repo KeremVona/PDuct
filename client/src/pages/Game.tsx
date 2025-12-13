@@ -4,6 +4,7 @@ import FuelMain from "../components/fuel/FuelMain";
 import MineMain from "../components/mine/MineMain";
 import FarmMain from "../components/farm/FarmMain";
 import Modal from "../components/Modal";
+import { ToastProvider } from "../components/ui/toast/ToastProvider";
 
 // Configuration for the heat system
 const HEAT_DECAY_RATE = 2;
@@ -47,9 +48,17 @@ const Game = () => {
   const renderModalContent = () => {
     switch (activeModal) {
       case MODALS.BASE:
-        return <BaseMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />;
+        return (
+          <ToastProvider>
+            <BaseMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />
+          </ToastProvider>
+        );
       case MODALS.FUEL_MAIN:
-        return <FuelMain />;
+        return (
+          <ToastProvider>
+            <FuelMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />
+          </ToastProvider>
+        );
       case MODALS.MINE:
         return <MineMain />;
       case MODALS.FARM:
@@ -90,7 +99,9 @@ const Game = () => {
         {activeModal !== MODALS.BASE ? (
           <Modal>{renderModalContent()} </Modal>
         ) : (
-          <BaseMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />
+          <ToastProvider>
+            <BaseMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />
+          </ToastProvider>
         )}
       </div>
     </div>
