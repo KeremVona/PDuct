@@ -3,6 +3,7 @@ import type { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { increment, decrement } from "../../features/base/house/houseSlice";
 import { useToast } from "../ui/toast/ToastProvider";
+import { incrementWC } from "../../features/fuel_main/woodSlice";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -19,6 +20,8 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const { addToast } = useToast();
   const houseCount = useSelector((state: RootState) => state.house.value);
   const dispatch = useDispatch();
+
+  const woodCount = useSelector((state: RootState) => state.wood.value);
 
   const houseBoxes = Array(houseCount)
     .fill(null)
@@ -80,6 +83,12 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
 
           <p className={`text-sm ${status.colorClass}`}>
             Status: {status.message}
+          </p>
+        </div>
+        <div className="border-white border-10 border-solid p-4 text-center ml-2">
+          <p className="text-white text-xl font-bold">Wood Storage</p>
+          <p className="text-xl font-bold transition duration-300">
+            Wood Count: {woodCount}
           </p>
         </div>
       </div>
