@@ -22,7 +22,7 @@ const MODALS = {
 const Game = () => {
   const [heatLevel, setHeatLevel] = useState(50);
   const [activeModal, setActiveModal] = useState(MODALS.BASE);
-
+  const a = 1;
   useEffect(() => {
     const intervalId = setInterval(() => {
       setHeatLevel((prevHeatLevel) => {
