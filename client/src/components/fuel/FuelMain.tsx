@@ -32,12 +32,21 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
 
   const trees = useSelector((state: RootState) => state.tree.trees);
   const woodCount = useSelector((state: RootState) => state.wood.value);
-
   // FIX
   // Chopped trees shouldn't be able to be chopped again
   const handleChop = (treeId: number, tree: string) => {
-    dispatch(chopTree(treeId));
-    setHeatLevel((prev) => prev + 5);
+    if (trees[treeId].isChopped) {
+      console.log("tree already chopped");
+    } else {
+      dispatch(chopTree(treeId));
+      console.log("chopped tree ", treeId);
+      setHeatLevel((prev) => prev + 5);
+      addToast(`Heat Level +5, Wood Count + 1/${woodCount + 1}`, "success");
+    }
+
+    // dispatch(chopTree(treeId));
+    // console.log("chopping tree ", treeId);
+
     switch (tree) {
       case "data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3c!--%20Uploaded%20to:%20SVG%20Repo,%20www.svgrepo.com,%20Generator:%20SVG%20Repo%20Mixer%20Tools%20--%3e%3csvg%20width='800px'%20height='800px'%20viewBox='0%200%2016%2016'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M4%204C4%201.79086%205.79086%200%208%200C9.86384%200%2011.4299%201.27477%2011.874%203H12C14.2091%203%2016%204.79086%2016%207C16%209.20914%2014.2091%2011%2012%2011H9V14H11V16H5V14H7V11H3.5C1.567%2011%200%209.433%200%207.5C0%205.567%201.567%204%203.5%204H4Z'%20fill='%23000000'/%3e%3c/svg%3e":
         dispatch(incrementWCByAmount(3));
@@ -51,7 +60,6 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
       default:
         break;
     }
-    addToast(`Heat Level +5, Wood Count + 1/${woodCount + 1}`, "success");
   };
   return (
     <div className="border-white border-2 p-2 bg-gray-500 border-solid w-250 h-140">
