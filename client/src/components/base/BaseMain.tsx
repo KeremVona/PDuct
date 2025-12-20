@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import type { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
-import { increment, decrement } from "../../features/base/house/houseSlice";
+import { increment } from "../../features/base/house/houseSlice";
+import {
+  incrementWFCount,
+  decrementWFCount,
+} from "../../features/base/workforce/workforceSlice";
 import { useToast } from "../ui/toast/ToastProvider";
-import { incrementWC } from "../../features/fuel_main/woodSlice";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -16,12 +19,21 @@ interface BaseMainProps {
 const MAX_HEAT = 100;
 const MIN_HEAT = 0;
 
+// TODO:
+// Add workforce
+// When a house is added, a person is incremented in the workforce
+// Tasks such as chopping trees cost workforce
+// After the task is done, the workforce that worked on the task become available in the workforce
+
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const { addToast } = useToast();
-  const houseCount = useSelector((state: RootState) => state.house.value);
   const dispatch = useDispatch();
 
+  const houseCount = useSelector((state: RootState) => state.house.value);
   const woodCount = useSelector((state: RootState) => state.wood.value);
+  const workforceCount = useSelector(
+    (state: RootState) => state.workforce.value,
+  );
 
   const houseBoxes = Array(houseCount)
     .fill(null)
@@ -60,6 +72,7 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
       addToast("No heating is available to heat new houses", "error");
     } else {
       dispatch(increment());
+      dispatch(incrementWFCount());
       setHeatLevel((prev) => Math.max(MIN_HEAT, prev - 1));
     }
   };
@@ -89,6 +102,12 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
           <p className="text-white text-xl font-bold">Wood Storage</p>
           <p className="text-xl font-bold transition duration-300">
             Wood Count: {woodCount}
+          </p>
+        </div>
+        <div className="border-white border-10 border-solid p-4 text-center ml-2">
+          <p className="text-white text-xl font-bold">Workforce</p>
+          <p className="text-xl font-bold transition duration-300">
+            Workforce count: {workforceCount}
           </p>
         </div>
       </div>

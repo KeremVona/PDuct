@@ -3,6 +3,7 @@ import heatLevelReducer from "../features/base/heat/heatLevelSlice";
 import houseReducer from "../features/base/house/houseSlice";
 import treeReducer from "../features/fuel_main/treeSlice";
 import woodReducer from "../features/fuel_main/woodSlice";
+import workforceReducer from "../features/base/workforce/workforceSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     house: houseReducer,
     tree: treeReducer,
     wood: woodReducer,
+    workforce: workforceReducer,
   },
 });
 
