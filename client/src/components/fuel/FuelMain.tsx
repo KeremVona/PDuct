@@ -42,8 +42,7 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
   const handleChop = (treeId: number, tree: string) => {
     if (trees[treeId].isChopped) {
       addToast("Tree already chopped", "error");
-    }
-    if (workforceCount === 0) {
+    } else if (workforceCount === 0) {
       addToast("No workforce available", "error");
     } else if (workforceCount > 0 && !isBeingChopped) {
       dispatch(decrementWFCount());
@@ -80,6 +79,7 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
             break;
         }
         dispatch(incrementWFCount());
+        setIsBeingChopped(false);
       }, 2000);
     }
   };
@@ -89,7 +89,10 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
   }, [workforceCount]);
   return (
     <div className="border-white border-2 p-2 bg-gray-500 border-solid w-250 h-140">
-      <h2 className="text-white text-xl">Fuel</h2>
+      <div className="text-center">
+        <h2 className="text-white text-xl">Fuel</h2>
+        <p>Workforce count: {workforceCount}</p>
+      </div>
       <div className="items-center justify-center flex">
         <div className="border-white border-2 border-solid p-4 h-120 w-140">
           <p>Fuel</p>
