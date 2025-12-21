@@ -12,14 +12,14 @@ export const houseSlice = createSlice({
   name: "houseSlice",
   initialState,
   reducers: {
-    increment: (state) => {
+    incrementHC: (state) => {
       state.value += 1;
     },
-    decrement: (state) => {
+    decrementHC: (state) => {
       state.value -= 1;
     },
   },
 });
 
-export const { increment, decrement } = houseSlice.actions;
+export const { incrementHC, decrementHC } = houseSlice.actions;
 export default houseSlice.reducer;

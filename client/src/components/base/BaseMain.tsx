@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import type { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
-import { increment } from "../../features/base/house/houseSlice";
+import { incrementHC } from "../../features/base/house/houseSlice";
 import {
   incrementWFCount,
   decrementWFCount,
 } from "../../features/base/workforce/workforceSlice";
 import { useToast } from "../ui/toast/ToastProvider";
+import { decrementWC } from "../../features/fuel_main/woodSlice";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -22,6 +23,7 @@ const MIN_HEAT = 0;
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const { addToast } = useToast();
   const dispatch = useDispatch();
+  const lastHeatLevelRef = useRef(heatLevel);
 
   const houseCount = useSelector((state: RootState) => state.house.value);
   const woodCount = useSelector((state: RootState) => state.wood.value);
@@ -65,11 +67,26 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
     if (heatLevel === MIN_HEAT) {
       addToast("No heating is available to heat new houses", "error");
     } else {
-      dispatch(increment());
+      dispatch(incrementHC());
       dispatch(incrementWFCount());
       setHeatLevel((prev) => Math.max(MIN_HEAT, prev - 1));
     }
   };
+
+  const handleHeat = () => {
+    if (woodCount == 0) {
+      addToast("No wood available", "error");
+      return;
+    }
+    dispatch(decrementWC());
+    setHeatLevel((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    lastHeatLevelRef.current = heatLevel;
+  }, [heatLevel]);
+
+  const lastHeatLevel = lastHeatLevelRef.current;
 
   return (
     <div className="border-white border-2 p-2 bg-gray-500 border-solid w-250 h-140">
@@ -82,12 +99,26 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
       <div className="items-center justify-center flex mb-10">
         <div className="border-white border-10 border-solid p-4 text-center ">
           <p className="text-white text-xl font-bold">Base</p>
-          <p
-            className={`text-xl font-bold transition duration-300 ${status.colorClass}`}
-          >
-            Heat Level: {heatLevel}
-          </p>
-
+          <div className="relative inline-block">
+            {" "}
+            <p
+              key={heatLevel}
+              className={`text-xl font-bold animate-numberPop ${status.colorClass}`}
+            >
+              Heat Level: {heatLevel}
+            </p>
+            {heatLevel !== lastHeatLevel && (
+              <span
+                key={`diff-${heatLevel}`}
+                className={`absolute -right-10 top-0 text-sm font-bold animate-fade-out-up 
+        ${heatLevel > lastHeatLevel ? "text-green-400" : "text-red-400"}`}
+              >
+                {heatLevel > lastHeatLevel
+                  ? `+${heatLevel - lastHeatLevel}`
+                  : heatLevel - lastHeatLevel}
+              </span>
+            )}
+          </div>
           <p className={`text-sm ${status.colorClass}`}>
             Status: {status.message}
           </p>
@@ -97,6 +128,12 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
           <p className="text-xl font-bold transition duration-300">
             Wood Count: {woodCount}
           </p>
+          <button
+            onClick={handleHeat}
+            className="bg-gray-400 text-black p-1 rounded-lg"
+          >
+            Heat
+          </button>
         </div>
         <div className="border-white border-10 border-solid p-4 text-center ml-2">
           <p className="text-white text-xl font-bold">Workforce</p>

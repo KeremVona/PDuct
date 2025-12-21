@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 import type { ReactNode } from "react";
+import logs from "../../../assets/fuel_main/logs.svg";
 
 type ToastType = "success" | "error" | "info" | "warning";
 
@@ -15,21 +16,7 @@ interface ToastContextType {
 }
 
 const Icons = {
-  success: (
-    <svg
-      className="w-6 h-6 text-green-500"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M5 13l4 4L19 7"
-      />
-    </svg>
-  ),
+  success: <img src={logs} className="w-6 h-6" />,
   error: (
     <svg
       className="w-6 h-6 text-red-500"
@@ -112,7 +99,7 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
         removeToast(id);
       }, duration);
     },
-    [removeToast]
+    [removeToast],
   );
 
   return (
@@ -130,10 +117,10 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
                 toast.type === "success"
                   ? "border-green-500"
                   : toast.type === "error"
-                  ? "border-red-500"
-                  : toast.type === "warning"
-                  ? "border-yellow-500"
-                  : "border-blue-500"
+                    ? "border-red-500"
+                    : toast.type === "warning"
+                      ? "border-yellow-500"
+                      : "border-blue-500"
               }
             `}
             role="alert"
