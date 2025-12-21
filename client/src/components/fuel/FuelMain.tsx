@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import tree1 from "../../assets/fuel_main/tree 1.svg";
 import tree2 from "../../assets/fuel_main/tree 2.svg";
 import tree3 from "../../assets/fuel_main/tree 3.svg";
@@ -27,11 +27,6 @@ interface FuelMainProps {
   setHeatLevel: SetHeatLevelAction;
 }
 
-// TO DO
-// Add cooldown once the tree is going to be chopped - Done
-// Notify when the tree is chopped - Done
-// Replace the chopped tree console.log with a good message to the user - Done
-
 const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
   const { addToast } = useToast();
   const dispatch = useDispatch();
@@ -52,7 +47,6 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
       addToast("No workforce available", "error");
     } else if (workforceCount > 0 && !isBeingChopped) {
       dispatch(decrementWFCount());
-
       setIsBeingChopped(true);
 
       setTimeout(() => {
@@ -85,11 +79,14 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
           default:
             break;
         }
+        dispatch(incrementWFCount());
       }, 2000);
-
-      dispatch(incrementWFCount());
     }
   };
+
+  useEffect(() => {
+    console.log("workforce count ", workforceCount);
+  }, [workforceCount]);
   return (
     <div className="border-white border-2 p-2 bg-gray-500 border-solid w-250 h-140">
       <h2 className="text-white text-xl">Fuel</h2>

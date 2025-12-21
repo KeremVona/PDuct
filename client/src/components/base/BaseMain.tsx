@@ -19,12 +19,6 @@ interface BaseMainProps {
 const MAX_HEAT = 100;
 const MIN_HEAT = 0;
 
-// TODO:
-// Add workforce
-// When a house is added, a person is incremented in the workforce
-// Tasks such as chopping trees cost workforce
-// After the task is done, the workforce that worked on the task become available in the workforce
-
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const { addToast } = useToast();
   const dispatch = useDispatch();
