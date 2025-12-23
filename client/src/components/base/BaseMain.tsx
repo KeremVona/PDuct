@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import type { RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
 import { incrementHC } from "../../features/base/house/houseSlice";
@@ -8,6 +8,7 @@ import {
 } from "../../features/base/workforce/workforceSlice";
 import { useToast } from "../ui/toast/ToastProvider";
 import { decrementWC } from "../../features/fuel_main/woodSlice";
+import house1 from "../../assets/base_main/house 1.svg";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -21,6 +22,8 @@ const MAX_HEAT = 100;
 const MIN_HEAT = 0;
 
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
+  const [hasBuiltHouse, sethasBuiltHouse] = useState(true);
+
   const { addToast } = useToast();
   const dispatch = useDispatch();
   const lastHeatLevelRef = useRef(heatLevel);
@@ -33,14 +36,7 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
 
   const houseBoxes = Array(houseCount)
     .fill(null)
-    .map((_, index) => (
-      <div
-        key={index}
-        className="border-white border-2 border-solid p-4 justify-center flex"
-      >
-        <p>House {index + 1}</p>
-      </div>
-    ));
+    .map((_, index) => <img key={index} src={house1} className="w-6 h-6" />);
 
   const getHeatStatus = () => {
     if (heatLevel > 34) {
@@ -67,9 +63,11 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
     if (heatLevel === MIN_HEAT) {
       addToast("No heating is available to heat new houses", "error");
     } else {
-      dispatch(incrementHC());
-      dispatch(incrementWFCount());
-      setHeatLevel((prev) => Math.max(MIN_HEAT, prev - 1));
+      setTimeout(() => {
+        dispatch(incrementHC());
+        dispatch(incrementWFCount());
+        setHeatLevel((prev) => Math.max(MIN_HEAT, prev - 1));
+      }, 2000);
     }
   };
 
@@ -100,7 +98,6 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
         <div className="border-white border-10 border-solid p-4 text-center ">
           <p className="text-white text-xl font-bold">Base</p>
           <div className="relative inline-block">
-            {" "}
             <p
               key={heatLevel}
               className={`text-xl font-bold animate-numberPop ${status.colorClass}`}
