@@ -22,7 +22,7 @@ const MAX_HEAT = 100;
 const MIN_HEAT = 0;
 
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
-  const [hasBuiltHouse, sethasBuiltHouse] = useState(true);
+  const [isBuildingHouse, setIsBuildingHouse] = useState(false);
 
   const { addToast } = useToast();
   const dispatch = useDispatch();
@@ -63,10 +63,12 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
     if (heatLevel === MIN_HEAT) {
       addToast("No heating is available to heat new houses", "error");
     } else {
+      setIsBuildingHouse(true);
       setTimeout(() => {
         dispatch(incrementHC());
         dispatch(incrementWFCount());
         setHeatLevel((prev) => Math.max(MIN_HEAT, prev - 1));
+        setIsBuildingHouse(false);
       }, 2000);
     }
   };
@@ -139,6 +141,11 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
           </p>
         </div>
       </div>
+      {isBuildingHouse && (
+        <div className="items-center justify-center grid grid-cols-4 gap-2">
+          <p>Building house...</p>
+        </div>
+      )}
       <div className="items-center justify-center grid grid-cols-4 gap-2">
         {houseBoxes}
       </div>
