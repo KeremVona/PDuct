@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BaseMain from "../components/base/BaseMain";
+import Research from "../components/base/Research";
 import FuelMain from "../components/fuel/FuelMain";
 import MineMain from "../components/mine/MineMain";
 import FarmMain from "../components/farm/FarmMain";
@@ -14,6 +15,7 @@ const MIN_HEAT = 0;
 
 const MODALS = {
   BASE: "base",
+  RESEARCH: "research",
   FUEL_MAIN: "fuelMain",
   MINE: "mine",
   FARM: "farm",
@@ -22,7 +24,6 @@ const MODALS = {
 const Game = () => {
   const [heatLevel, setHeatLevel] = useState(50);
   const [activeModal, setActiveModal] = useState(MODALS.BASE);
-  const a = 1;
   useEffect(() => {
     const intervalId = setInterval(() => {
       setHeatLevel((prevHeatLevel) => {
@@ -41,6 +42,8 @@ const Game = () => {
 
   const closeModal = () => setActiveModal(MODALS.BASE);
 
+  const openResearchModal = () => setActiveModal(MODALS.RESEARCH);
+
   const openFuelMainModal = () => setActiveModal(MODALS.FUEL_MAIN);
   const openMineModal = () => setActiveModal(MODALS.MINE);
   const openFarmModal = () => setActiveModal(MODALS.FARM);
@@ -51,6 +54,12 @@ const Game = () => {
         return (
           <ToastProvider>
             <BaseMain heatLevel={heatLevel} setHeatLevel={setHeatLevel} />
+          </ToastProvider>
+        );
+      case MODALS.RESEARCH:
+        return (
+          <ToastProvider>
+            <Research />
           </ToastProvider>
         );
       case MODALS.FUEL_MAIN:
@@ -78,6 +87,12 @@ const Game = () => {
       </button>
       <button
         className="text-white bg-gray-600 p-1 mr-1 rounded-lg"
+        onClick={openResearchModal}
+      >
+        Research
+      </button>
+      <button
+        className="text-white bg-gray-600 p-1 mr-1 rounded-lg"
         onClick={openFuelMainModal}
       >
         Fuel Main
@@ -94,7 +109,6 @@ const Game = () => {
       >
         Farm Main
       </button>
-
       <div className="items-center justify-center flex min-h-screen">
         {activeModal !== MODALS.BASE ? (
           <Modal>{renderModalContent()} </Modal>

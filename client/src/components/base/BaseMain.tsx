@@ -23,6 +23,7 @@ const MIN_HEAT = 0;
 
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const [isBuildingHouse, setIsBuildingHouse] = useState(false);
+  const [isCurrentlyResearching, setIsCurrentlyResearching] = useState(false);
 
   const { addToast } = useToast();
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
       >
         add 1 person
       </button>
-      <div className="items-center justify-center flex mb-10">
+      <div className="items-center justify-center grid mb-10 grid-cols-3">
         <div className="border-white border-10 border-solid p-4 text-center ">
           <p className="text-white text-xl font-bold">Base</p>
           <div className="relative inline-block">
@@ -138,6 +139,12 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
           <p className="text-white text-xl font-bold">Workforce</p>
           <p className="text-xl font-bold transition duration-300">
             Workforce count: {workforceCount}
+          </p>
+        </div>
+        <div className="border-white border-10 border-solid p-4 text-center ml-2">
+          <p className="text-white text-xl font-bold">Research Center</p>
+          <p className="text-xl font-bold transition duration-300">
+            Currently researching: {0}
           </p>
         </div>
       </div>
