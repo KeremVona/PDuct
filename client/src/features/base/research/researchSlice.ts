@@ -31,6 +31,17 @@ const initialState: ResearchSliceState = {
       researchProgress: 100,
       progressMultiplier: 0,
     },
+    {
+      id: 1,
+      title: "Steam-Powered Crosscut Saw",
+      description:
+        "A large, stationary or semi-portable frame saw driven by a piston. Best for large logs brought to a central site.",
+      isResearched: false,
+      isBeingResearched: false,
+      isResearchable: true,
+      researchProgress: 0,
+      progressMultiplier: 0.4,
+    },
   ],
   totalCompleted: 0,
 };
@@ -55,8 +66,8 @@ export const researchSlice = createSlice({
         }
       }
     },
-    startResearch: (state, action: PayloadAction<{ id: number }>) => {
-      const item = state.items.find((i) => i.id === action.payload.id);
+    startResearch: (state, action: PayloadAction<number>) => {
+      const item = state.items.find((i) => i.id === action.payload);
       if (item) {
         item.isBeingResearched = true;
         item.isResearchable = false;
