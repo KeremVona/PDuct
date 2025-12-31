@@ -18,12 +18,11 @@ interface BaseMainProps {
 }
 
 // Part of the heat system
-const MAX_HEAT = 100;
 const MIN_HEAT = 0;
 
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const [isBuildingHouse, setIsBuildingHouse] = useState(false);
-  const [isCurrentlyResearching, setIsCurrentlyResearching] = useState(false);
+  const [currentlyResearching, setCurrentlyResearching] = useState(-1);
 
   const { addToast } = useToast();
   const dispatch = useDispatch();
@@ -31,6 +30,18 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
 
   const houseCount = useSelector((state: RootState) => state.house.value);
   const woodCount = useSelector((state: RootState) => state.wood.value);
+  const items = useSelector((state: RootState) => state.research.items);
+  useEffect(() => {
+    const calcResearchingItemsLength = () => {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].isBeingResearched) {
+          console.log("iteration");
+          setCurrentlyResearching((prev) => prev + 1);
+        }
+      }
+    };
+    calcResearchingItemsLength();
+  }, []);
   const workforceCount = useSelector(
     (state: RootState) => state.workforce.value,
   );
@@ -143,9 +154,15 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
         </div>
         <div className="border-white border-10 border-solid p-4 text-center ml-2">
           <p className="text-white text-xl font-bold">Research Center</p>
-          <p className="text-xl font-bold transition duration-300">
-            Currently researching: {0}
-          </p>
+          {currentlyResearching === -1 ? (
+            <p className="text-xl font-bold transition duration-300">
+              Currently researching: {currentlyResearching + 1}
+            </p>
+          ) : (
+            <p className="text-xl font-bold transition duration-300">
+              Currently researching: {currentlyResearching}
+            </p>
+          )}
         </div>
       </div>
       {isBuildingHouse && (
