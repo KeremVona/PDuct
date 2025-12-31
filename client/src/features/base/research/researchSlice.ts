@@ -12,6 +12,7 @@ export interface ResearchItem {
   isResearchable: boolean;
   researchProgress: number;
   progressMultiplier: number;
+  chopSpeed: number;
 }
 
 export interface ResearchSliceState {
@@ -30,6 +31,7 @@ const initialState: ResearchSliceState = {
       isResearchable: false,
       researchProgress: 100,
       progressMultiplier: 0,
+      chopSpeed: 1,
     },
     {
       id: 1,
@@ -40,7 +42,8 @@ const initialState: ResearchSliceState = {
       isBeingResearched: false,
       isResearchable: true,
       researchProgress: 0,
-      progressMultiplier: 0.4,
+      progressMultiplier: 50,
+      chopSpeed: 2500,
     },
   ],
   totalCompleted: 0,

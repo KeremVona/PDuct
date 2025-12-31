@@ -30,7 +30,7 @@ const Research = () => {
         Tools
       </button>
       <button
-        onClick={() => handleStartResearch(1, 0.4)}
+        onClick={() => handleStartResearch(1, 200)}
         className="text-white bg-gray-600 p-1 mr-1 mb-2 rounded-lg"
       >
         start research

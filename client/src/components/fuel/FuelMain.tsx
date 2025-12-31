@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import tree1 from "../../assets/fuel_main/tree 1.svg";
 import tree2 from "../../assets/fuel_main/tree 2.svg";
 import tree3 from "../../assets/fuel_main/tree 3.svg";
@@ -32,13 +32,23 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
   const dispatch = useDispatch();
 
   const [isBeingChopped, setIsBeingChopped] = useState(false);
+  const [usingToolId, setUsingToolId] = useState(0);
+
   let chopTrees: number[] = [];
 
   const trees = useSelector((state: RootState) => state.tree.trees);
   const woodCount = useSelector((state: RootState) => state.wood.value);
+  const items = useSelector((state: RootState) => state.research.items);
   const workforceCount = useSelector(
     (state: RootState) => state.workforce.value,
   );
+
+  const researchedTools = useMemo(() => {
+    return items.filter((item) => item.isResearched);
+  }, [items]);
+
+  const usingTool = researchedTools.find((tool) => tool.id === usingToolId);
+  const chopSpeed = usingTool ? usingTool.chopSpeed : 1;
 
   const handleChop = (treeId: number, tree: string) => {
     if (trees[treeId].isChopped) {
@@ -83,18 +93,31 @@ const FuelMain: React.FC<FuelMainProps> = ({ heatLevel, setHeatLevel }) => {
         }
         dispatch(incrementWFCount());
         setIsBeingChopped(false);
-      }, 2000);
+      }, 5000 / chopSpeed);
     }
   };
   return (
     <div className="border-white border-2 p-2 bg-gray-500 border-solid w-250 h-140">
-      <div className="text-center">
-        <h2 className="text-white text-xl">Fuel</h2>
-        <p>Workforce count: {workforceCount}</p>
+      <p className="text-white text-center bg-gray-600 text-xl">Woody Forest</p>
+      <div className="text-center mb-2 flex">
+        <p className="flex-1/3">Workforce count: {workforceCount}</p>
+        <p className="flex-1/3">Using: Axe</p>
+        <div className="flex-1/3">
+          <label>Using:</label>
+          <select
+            value={usingToolId}
+            onChange={(e) => setUsingToolId(Number(e.target.value))}
+          >
+            {researchedTools.map((tool) => (
+              <option key={tool.id} value={tool.id}>
+                {tool.title}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="items-center justify-center flex">
         <div className="border-white border-2 border-solid p-4 h-120 w-140">
-          <p>Fuel</p>
           <div className="grid grid-cols-8">
             {trees.map((tree) => (
               <img
