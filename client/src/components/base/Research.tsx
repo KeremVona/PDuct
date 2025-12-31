@@ -1,24 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import { startResearch } from "../../features/base/research/researchSlice";
-import { updateProgress } from "../../features/base/research/researchSlice";
 
 import { SmoothExpandable } from "../ui/text/SmoothExpandable.tsx";
-import { useToast } from "../ui/toast/ToastProvider";
 
 import check1 from "../../assets/research/check 1.svg";
-import reject1 from "../../assets/research/reject 1.svg";
 import inProgress from "../../assets/research/in progress.svg";
 import locked from "../../assets/research/locked.svg";
 import unlocked from "../../assets/research/unlocked.svg";
 
-const UpdateInterval = 2000;
-
 const Research = () => {
   const dispatch = useDispatch();
-  const { addToast } = useToast();
 
   const [researchCategory, setResearchCategory] = useState("tools");
   const items = useSelector((state: RootState) => state.research.items);
@@ -29,21 +23,6 @@ const Research = () => {
     dispatch(startResearch(id));
     setResearchingItem({ ...researchingItem, id: id, amount: amount });
   };
-
-  useEffect(() => {
-    let id = researchingItem.id;
-    let amount = researchingItem.amount;
-
-    const intervalId = setInterval(() => {
-      dispatch(updateProgress({ id, amount }));
-    }, UpdateInterval);
-
-    addToast("Update progress", "success");
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [researchingItem.id, dispatch]);
 
   return (
     <div className="border-white border-2 p-2 bg-gray-500 border-solid w-250 h-140">

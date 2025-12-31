@@ -50,21 +50,19 @@ export const researchSlice = createSlice({
   name: "researchSlice",
   initialState: initialState,
   reducers: {
-    updateProgress: (
-      state,
-      action: PayloadAction<{ id: number; amount: number }>,
-    ) => {
-      const item = state.items.find((i) => i.id === action.payload.id);
-      if (item) {
-        item.researchProgress +=
-          action.payload.amount * item.progressMultiplier;
+    researchTick: (state) => {
+      state.items.forEach((item) => {
+        if (item.isBeingResearched && !item.isResearched) {
+          item.researchProgress += item.progressMultiplier;
 
-        if (item.researchProgress >= 100) {
-          item.isResearched = true;
-          item.isBeingResearched = false;
-          state.totalCompleted += 1;
+          if (item.researchProgress >= 100) {
+            item.researchProgress = 100;
+            item.isResearched = true;
+            item.isBeingResearched = false;
+            state.totalCompleted += 1;
+          }
         }
-      }
+      });
     },
     startResearch: (state, action: PayloadAction<number>) => {
       const item = state.items.find((i) => i.id === action.payload);
@@ -76,5 +74,5 @@ export const researchSlice = createSlice({
   },
 });
 
-export const { updateProgress, startResearch } = researchSlice.actions;
+export const { researchTick, startResearch } = researchSlice.actions;
 export default researchSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import BaseMain from "../components/base/BaseMain";
 import Research from "../components/base/Research";
 import FuelMain from "../components/fuel/FuelMain";
