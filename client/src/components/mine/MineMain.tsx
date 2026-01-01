@@ -23,6 +23,15 @@ const MineMain = () => {
           <label>Using:</label>
         </div>
       </div>
+      <div className="items-center justify-center flex">
+        <div className="border-white border-2 border-solid p-4 h-120 w-140">
+          <div className="grid grid-cols-3 gap-2">
+            <div className="bg-gray-50 text-center">Copper</div>
+            <div className="bg-gray-50 text-center">Tin</div>
+            <div className="bg-gray-50 text-center">Coal</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
