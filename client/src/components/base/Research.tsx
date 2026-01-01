@@ -30,7 +30,7 @@ const Research = () => {
         Tools
       </button>
       <button
-        onClick={() => handleStartResearch(1, 200)}
+        onClick={() => handleStartResearch(1, 1)}
         className="text-white bg-gray-600 p-1 mr-1 mb-2 rounded-lg"
       >
         start research
@@ -43,9 +43,11 @@ const Research = () => {
               className={`group relative overflow-hidden rounded-lg border-2 transition-all duration-300 
         ${item.isResearched ? "border-blue-500/50 bg-slate-900" : "border-slate-700 bg-slate-900/80 hover:border-slate-500"}`}
             >
-              {/* Header Section */}
               <div className="flex items-center justify-between bg-slate-800/50 px-3 py-2 border-b border-slate-700">
                 <h3
+                  onClick={() =>
+                    handleStartResearch(item.id, item.progressMultiplier)
+                  }
                   className={`font-bold uppercase tracking-wider text-sm ${item.isResearched ? "text-blue-400" : "text-slate-300"}`}
                 >
                   {item.title}
