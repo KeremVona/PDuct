@@ -39,6 +39,7 @@ const MineMain = () => {
                   className="bg-gray-50 text-center"
                 >
                   {ore.title}
+                  {ore.isBeingMined && `Mining ${ore.title}`}
                 </div>
               </div>
             ))}

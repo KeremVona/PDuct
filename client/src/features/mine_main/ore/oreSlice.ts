@@ -62,7 +62,6 @@ export const oreSlice = createSlice({
         }
       }
     },
-
     mineTick: (state) => {
       state.items.forEach((item) => {
         if (item.isBeingMined) {
