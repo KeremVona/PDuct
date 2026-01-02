@@ -5,6 +5,7 @@ import {
   decrementWFCount,
   incrementWFCount,
 } from "../../features/base/workforce/workforceSlice";
+import { handleMining } from "../../features/mine_main/ore/oreSlice";
 import type { RootState } from "../../app/store";
 
 const MineMain = () => {
@@ -12,6 +13,11 @@ const MineMain = () => {
   const workforceCount = useSelector(
     (state: RootState) => state.workforce.value,
   );
+  const ores = useSelector((state: RootState) => state.ore.items);
+
+  const handleMine = (id: number) => {
+    dispatch(handleMining(id));
+  };
 
   return (
     <div className="border-solid border-white border-2 p-2 bg-gray-500 w-250 h-140">
@@ -26,9 +32,16 @@ const MineMain = () => {
       <div className="items-center justify-center flex">
         <div className="border-white border-2 border-solid p-4 h-120 w-140">
           <div className="grid grid-cols-3 gap-2">
-            <div className="bg-gray-50 text-center">Copper</div>
-            <div className="bg-gray-50 text-center">Tin</div>
-            <div className="bg-gray-50 text-center">Coal</div>
+            {ores.map((ore) => (
+              <div key={ore.id}>
+                <div
+                  onClick={() => handleMine(ore.id)}
+                  className="bg-gray-50 text-center"
+                >
+                  {ore.title}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

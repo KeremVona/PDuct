@@ -52,16 +52,22 @@ export const oreSlice = createSlice({
   name: "ores",
   initialState,
   reducers: {
-    incrementOreCount: (state, action: PayloadAction<number>) => {
+    handleMining: (state, action: PayloadAction<number>) => {
       const item = state.items.find((i) => i.id === action.payload);
       if (item) {
-        item.count++;
+        if (item.isBeingMined) {
+          item.isBeingMined = false;
+        } else {
+          item.isBeingMined = true;
+        }
       }
     },
+
     mineTick: (state) => {
       state.items.forEach((item) => {
         if (item.isBeingMined) {
           item.mineProgress += 1;
+          item.count++;
 
           // if (item.mineProgress >= 100) {
           //   item.mineProgress = 100;
@@ -72,3 +78,6 @@ export const oreSlice = createSlice({
     },
   },
 });
+
+export const { handleMining, mineTick } = oreSlice.actions;
+export default oreSlice.reducer;
