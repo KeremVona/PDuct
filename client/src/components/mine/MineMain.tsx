@@ -17,6 +17,14 @@ const MineMain = () => {
 
   const handleMine = (id: number) => {
     dispatch(handleMining(id));
+    const item = ores.find((i) => i.id === id);
+    if (item) {
+      if (!item.isBeingMined) {
+        dispatch(decrementWFCount());
+      } else {
+        dispatch(incrementWFCount());
+      }
+    }
   };
 
   return (
