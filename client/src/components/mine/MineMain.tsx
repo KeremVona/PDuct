@@ -16,14 +16,19 @@ const MineMain = () => {
   const ores = useSelector((state: RootState) => state.ore.items);
 
   const handleMine = (id: number) => {
-    dispatch(handleMining(id));
     const item = ores.find((i) => i.id === id);
-    if (item) {
-      if (!item.isBeingMined) {
-        dispatch(decrementWFCount());
-      } else {
-        dispatch(incrementWFCount());
+    if (workforceCount > 0) {
+      dispatch(handleMining(id));
+      if (item) {
+        if (!item.isBeingMined) {
+          dispatch(decrementWFCount());
+        } else {
+          dispatch(incrementWFCount());
+        }
       }
+    } else if (item && item.isBeingMined) {
+      dispatch(handleMining(id));
+      dispatch(incrementWFCount());
     }
   };
 
