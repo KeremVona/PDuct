@@ -51,8 +51,7 @@ const MineMain = () => {
                   onClick={() => handleMine(ore.id)}
                   className="bg-gray-50 text-center"
                 >
-                  {ore.title}
-                  {ore.isBeingMined && `Mining ${ore.title}`}
+                  {ore.isBeingMined ? `Mining ${ore.title}` : ore.title}
                 </div>
               </div>
             ))}
