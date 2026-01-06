@@ -147,6 +147,12 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
           </button>
         </div>
         <div className="border-white border-10 border-solid p-4 text-center ml-2">
+          <p className="text-white text-xl font-bold">Ore Storage</p>
+          <p className="text-xl font-bold transition duration-300">Ore 1</p>
+          <p className="text-xl font-bold transition duration-300">Ore 2</p>
+          <p className="text-xl font-bold transition duration-300">Ore 3</p>
+        </div>
+        <div className="border-white border-10 border-solid p-4 text-center ml-2">
           <p className="text-white text-xl font-bold">Workforce</p>
           <p className="text-xl font-bold transition duration-300">
             Workforce count: {workforceCount}
