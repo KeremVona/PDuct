@@ -12,7 +12,6 @@ import {
 } from "../../features/base/workforce/workforceSlice";
 import { decrementWC } from "../../features/fuel_main/woodSlice";
 import house1 from "../../assets/base_main/house 1.svg";
-import { oreSlice } from "../../features/mine_main/ore/oreSlice";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -46,6 +45,7 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
     };
     calcResearchingItemsLength();
   }, []);
+
   const workforceCount = useSelector(
     (state: RootState) => state.workforce.value,
   );

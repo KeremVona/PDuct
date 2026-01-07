@@ -1,6 +1,4 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { incrementWCByAmount } from "../../features/fuel_main/woodSlice";
 import {
   decrementWFCount,
   incrementWFCount,
@@ -49,9 +47,19 @@ const MineMain = () => {
               <div key={ore.id}>
                 <div
                   onClick={() => handleMine(ore.id)}
-                  className="bg-gray-50 text-center"
+                  className="bg-gray-50 group text-center"
                 >
-                  {ore.isBeingMined ? `Mining ${ore.title}` : ore.title}
+                  {ore.isBeingMined ? (
+                    <>
+                      <p>Mining {ore.title}</p>
+                      <div className="hidden group-hover:block mt-4 p-2 bg-blue-500 text-white">
+                        <p>Mine speed: {ore.mineSpeed}x</p>
+                        <p>Collected: {ore.mineProgress}</p>
+                      </div>
+                    </>
+                  ) : (
+                    ore.title
+                  )}
                 </div>
               </div>
             ))}
