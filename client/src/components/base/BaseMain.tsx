@@ -1,14 +1,18 @@
 import React, { useRef, useState, useEffect } from "react";
-import type { RootState } from "../../app/store";
+
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
+
+import { useToast } from "../ui/toast/ToastProvider";
+
 import { incrementHC } from "../../features/base/house/houseSlice";
 import {
   incrementWFCount,
   decrementWFCount,
 } from "../../features/base/workforce/workforceSlice";
-import { useToast } from "../ui/toast/ToastProvider";
 import { decrementWC } from "../../features/fuel_main/woodSlice";
 import house1 from "../../assets/base_main/house 1.svg";
+import { oreSlice } from "../../features/mine_main/ore/oreSlice";
 
 type SetHeatLevelAction = React.Dispatch<React.SetStateAction<number>>;
 
@@ -17,7 +21,6 @@ interface BaseMainProps {
   setHeatLevel: SetHeatLevelAction;
 }
 
-// Part of the heat system
 const MIN_HEAT = 0;
 
 const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
@@ -31,11 +34,12 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
   const houseCount = useSelector((state: RootState) => state.house.value);
   const woodCount = useSelector((state: RootState) => state.wood.value);
   const items = useSelector((state: RootState) => state.research.items);
+  const ores = useSelector((state: RootState) => state.ore.items);
+
   useEffect(() => {
     const calcResearchingItemsLength = () => {
       for (let i = 0; i < items.length; i++) {
         if (items[i].isBeingResearched) {
-          console.log("iteration");
           setCurrentlyResearching((prev) => prev + 1);
         }
       }
@@ -148,9 +152,11 @@ const BaseMain: React.FC<BaseMainProps> = ({ heatLevel, setHeatLevel }) => {
         </div>
         <div className="border-white border-10 border-solid p-4 text-center ml-2">
           <p className="text-white text-xl font-bold">Ore Storage</p>
-          <p className="text-xl font-bold transition duration-300">Ore 1</p>
-          <p className="text-xl font-bold transition duration-300">Ore 2</p>
-          <p className="text-xl font-bold transition duration-300">Ore 3</p>
+          {ores.map((ore, index) => (
+            <p className="text-xl font-bold" key={index}>
+              {ore.title} {ore.count}
+            </p>
+          ))}
         </div>
         <div className="border-white border-10 border-solid p-4 text-center ml-2">
           <p className="text-white text-xl font-bold">Workforce</p>
