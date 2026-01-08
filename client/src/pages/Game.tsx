@@ -4,6 +4,7 @@ import Research from "../components/base/Research";
 import FuelMain from "../components/fuel/FuelMain";
 import MineMain from "../components/mine/MineMain";
 import FarmMain from "../components/farm/FarmMain";
+import Furnace from "../components/base/Furnace";
 import Modal from "../components/Modal";
 import { ToastProvider } from "../components/ui/toast/ToastProvider";
 
@@ -16,6 +17,7 @@ const MIN_HEAT = 0;
 const MODALS = {
   BASE: "base",
   RESEARCH: "research",
+  FURNACE: "furnace",
   FUEL_MAIN: "fuelMain",
   MINE: "mine",
   FARM: "farm",
@@ -44,6 +46,8 @@ const Game = () => {
 
   const openResearchModal = () => setActiveModal(MODALS.RESEARCH);
 
+  const openFurnaceModal = () => setActiveModal(MODALS.FURNACE);
+
   const openFuelMainModal = () => setActiveModal(MODALS.FUEL_MAIN);
   const openMineModal = () => setActiveModal(MODALS.MINE);
   const openFarmModal = () => setActiveModal(MODALS.FARM);
@@ -60,6 +64,12 @@ const Game = () => {
         return (
           <ToastProvider>
             <Research />
+          </ToastProvider>
+        );
+      case MODALS.FURNACE:
+        return (
+          <ToastProvider>
+            <Furnace />
           </ToastProvider>
         );
       case MODALS.FUEL_MAIN:
@@ -90,6 +100,12 @@ const Game = () => {
         onClick={openResearchModal}
       >
         Research
+      </button>
+      <button
+        className="text-white bg-gray-600 p-1 mr-1 rounded-lg"
+        onClick={openFurnaceModal}
+      >
+        Furnace
       </button>
       <button
         className="text-white bg-gray-600 p-1 mr-1 rounded-lg"
