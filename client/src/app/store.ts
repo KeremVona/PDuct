@@ -6,6 +6,7 @@ import woodReducer from "../features/fuel_main/woodSlice";
 import workforceReducer from "../features/base/workforce/workforceSlice.ts";
 import researchReducer from "../features/base/research/researchSlice.ts";
 import oreReducer from "../features/mine_main/ore/oreSlice.ts";
+import furnaceReducer from "../features/base/furnace/furnaceSlice.ts";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     workforce: workforceReducer,
     research: researchReducer,
     ore: oreReducer,
+    furnace: furnaceReducer,
   },
 });
 

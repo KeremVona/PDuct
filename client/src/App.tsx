@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { researchTick } from "./features/base/research/researchSlice.ts";
 import { mineTick } from "./features/mine_main/ore/oreSlice.ts";
+import { smeltTick } from "./features/base/furnace/furnaceSlice.ts";
 
 function App() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ function App() {
     const interval = setInterval(() => {
       dispatch(researchTick());
       dispatch(mineTick());
+      dispatch(smeltTick());
     }, 1000);
     return () => clearInterval(interval);
   }, [dispatch]);
