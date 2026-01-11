@@ -26,7 +26,9 @@ const Furnace = () => {
           {furnaces.map((furnace) => (
             <div key={furnace.id}>
               <img src={furnacePNG} className="w-12 h-12" />
-              <p>Currently smelting: {furnace.currentlySmelting}</p>
+              {furnace.isSmelting && (
+                <p>Currently smelting: {furnace.currentlySmelting}</p>
+              )}
             </div>
           ))}
         </div>
