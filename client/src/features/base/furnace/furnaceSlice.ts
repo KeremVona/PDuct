@@ -48,6 +48,9 @@ export const furnaceSlice = createSlice({
     addFurnace: (state, action) => {
       state.items.push(action.payload);
     },
+    removeFurnace: (state) => {
+      state.items.pop();
+    },
   },
 });
 
